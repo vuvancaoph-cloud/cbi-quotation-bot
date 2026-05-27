@@ -66,3 +66,28 @@ async def reload_db():
 def stats():
     from db.crud import get_stats
     return get_stats()
+
+
+@app.get("/products/search")
+def search(q: str = ""):
+    """Test tìm kiếm sản phẩm — dùng để kiểm tra trước khi kết nối Zalo"""
+    if not q:
+        return {"error": "Thiếu tham số ?q=tên_sản_phẩm"}
+    from bot.search import search_products
+    results = search_products(q)
+    if not results:
+        return {"found": False, "query": q, "results": []}
+    return {
+        "found": True,
+        "query": q,
+        "count": len(results),
+        "results": [
+            {
+                "ma_hd":    p["ma_hd"],
+                "ten_hang": p["ten_hang"],
+                "don_vi":   p.get("don_vi"),
+                "gia_ban":  p.get("gia_ban"),
+            }
+            for p in results
+        ]
+    }
