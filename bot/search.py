@@ -70,17 +70,19 @@ def search_products(query: str, by_code: bool = False) -> list:
         return []
 
     candidates = list(_product_cache.keys())
+
+    # token_set_ratio xử lý tốt query ngắn (subset của tên sản phẩm)
     matches = process.extract(
         norm_query,
         candidates,
-        scorer=fuzz.token_sort_ratio,
-        limit=3
+        scorer=fuzz.token_set_ratio,
+        limit=5
     )
 
     results = []
     seen_ma = set()
     for match_name, score, _ in matches:
-        if score >= 80:
+        if score >= 78:
             p = _product_cache[match_name]
             if p["ma_hd"] not in seen_ma:
                 results.append(p)

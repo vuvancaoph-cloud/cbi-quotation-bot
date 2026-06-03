@@ -4,9 +4,6 @@ Telegram Client — gửi tin nhắn qua Telegram Bot API
 import os
 import httpx
 
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_API = f"https://api.telegram.org/bot{BOT_TOKEN}"
-
 
 def _api(method: str) -> str:
     return f"https://api.telegram.org/bot{os.getenv('TELEGRAM_BOT_TOKEN', '')}/{method}"
